@@ -8,7 +8,7 @@ let workers = [];
 
 
 
-menu = () => {
+menu = () => { 
     createManager = () => {
         inquirer
             .prompt([
@@ -40,7 +40,6 @@ menu = () => {
                 console.log(manager);
                 workers.push(manager);
                 employeeMenu();
-                //call another inquirer prompt
             });
     }
 
@@ -55,7 +54,7 @@ function employeeMenu() {
             {
                 type: "list",
                 name: "picker",
-                message: "Pick an option",
+                message: "Which position would you like to create?",
                 choices: ["Engineer", "Intern", "Quit"]
 
             },
