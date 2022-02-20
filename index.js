@@ -1,13 +1,21 @@
+//acquiring manager class
 const Manager = require("./lib/Manager");
+//acquiring engineer class
 const Engineer = require("./lib/Engineer");
+//acquiring intern class
 const Intern = require("./lib/Intern");
+//used to prompt questions to user
 const inquirer = require("inquirer");
 const path = require("path");
+//used to generate file with user input
 const fs = require("fs");
+//acquiring generatePage function
+const generatePage = require("./src/html-template");
+//empty array to push completed worker profiles in
 let workers = [];
 
 
-
+//Creates the first team member which is the manager
 menu = () => { 
     createManager = () => {
         inquirer
@@ -46,8 +54,9 @@ menu = () => {
     createManager();
 }
 
-menu();
 
+
+//directory prompt which asks the user what they want to do next
 function employeeMenu() {
     inquirer
         .prompt([
@@ -74,13 +83,14 @@ function employeeMenu() {
                     
                     default: 
                         console.log(workers);
-                        generateProfiles();
+                        generateProfiles(workers);
                         break;
                 }
-            //call another inquirer prompt
+            
         });
 }
 
+//creates engineer profile
 createEngineer = () => {
     inquirer
         .prompt([
@@ -112,10 +122,10 @@ createEngineer = () => {
             console.log(newEngineer);
             workers.push(newEngineer);
             employeeMenu();
-            //call another inquirer prompt
         });
 }
 
+//creates intern profile
 createIntern = () => {
     inquirer
         .prompt([
@@ -147,59 +157,21 @@ createIntern = () => {
             console.log(newIntern);
             workers.push(newIntern);
             employeeMenu();
-            //call another inquirer prompt
         });
 }
 
+
 function generateProfiles(workers) {
-    
-    let workerHtml = `
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employees</title>
-</head>
-<body>
-    ${cardGenerator()}
-    
-</body>
-</html>
-    `
+
+    const profileContent = generatePage(workers);
 
 
-    fs.writeFileSync('./dist/currentEmployees.html', workerHtml)
+    fs.writeFile('./dist/currentEmployees.html', profileContent, (err) => {
+        err ? console.log(err) : console.log('Congratulations, your employee webpage has been created!');
+    });
 
 }
 
-generateProfiles();
 
-function cardGenerator() {
-    let cards = "";
-    
-    for (var i = 0; i < workers.length; i++) {
-        currentWorker = workers[i]
 
-        let cardName = `<h2>${currentWorker.name}</h2>
-                        <p>${currentWorker.getRole()}</p>
-                        <p>${differentCatergory(currentWorker)}</p>`
-        cards += cardName;
-    
-    }
-    console.log(cards);
-    return cards;
-}
-
-function differentCatergory(currentWorker) {
-    let role = currentWorker.getRole();
-
-    if (role === "Manager") {
-        return `Office Number: ${currentWorker.getOfficeNumber()}`;
-    } else if (role === "Intern") {
-        return `School: ${currentWorker.getSchool()}`;
-    } else {
-        return `Github: ${currentWorker.getGithub()}`;
-    }
-}
+menu();
