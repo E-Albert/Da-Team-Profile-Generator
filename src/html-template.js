@@ -1,3 +1,5 @@
+const Manager = require("../lib/Manager");
+
 function generatePage(workers) {
     return `
    <!DOCTYPE html>
@@ -24,10 +26,12 @@ function generatePage(workers) {
     </div>
     <!--Card container-->
     <div class="cardContainer">
-        <div class="card">
-            ${cardGenerator(workers)}
+            
+            ${workers.map(element => 
+              cardGenerator(element)
+            ).join("")}
            
-        </div>
+       
     </div>
   </body>
 </html>`
@@ -37,24 +41,53 @@ function generatePage(workers) {
 }
 
 function cardGenerator(workers) {
-    let work = workers;
-    let cardContext = "";
+
+    if (workers.getRole() === "Manager") {
+      return `<div class="card">
+                <h4>${workers.getRole()}</h4>
+                <p>${workers.name}
+                <p>${workers.id}<p>
+                <p>${workers.email}<p>
+                <p>${workers.getOfficeNumber()}<p>
+              </div>`
+                
+    } else if (workers.getRole() === "Engineer") {
+      return `<div class="card">
+                <h4>${workers.getRole()}</h4>
+                <p>${workers.name}
+                <p>${workers.id}<p>
+                <p>${workers.email}<p>
+                <p>${workers.getGithub()}<p>
+              </div>`
+
+    } else {
+      return `<div class="card">
+                <h4>${workers.getRole()}</h4>
+                <p>${workers.name}
+                <p>${workers.id}<p>
+                <p>${workers.email}<p>
+                <p>${workers.getSchool()}<p>
+              </div>`
+  }
+
+    // let work = workers;
+    // let cardContext = "";
     
-    for (var i = 0; i < work.length; i++) {
-        currentWorker = work[i]
+    // for (var i = 0; i < work.length; i++) {
+    //     currentWorker = work[i]
         
-        let card = document.createElement('div')
-        let cardContext = `<h2>${currentWorker.name}</h2>
-                        <p>${currentWorker.getRole()}</p>
-                        <p>${differentCatergory(currentWorker)}</p>`
-        card += cardContext;
+    //     let card = document.createElement('div')
+    //     let cardContext = `<h2>${currentWorker.name}</h2>
+    //                     <p>${currentWorker.getRole()}</p>
+    //                     <p>${differentCatergory(currentWorker)}</p>`
+    //     card += cardContext;
         
 
 
 
-    }
-    console.log(card);
-    return card;
+    // }
+    // console.log(card);
+    // return card;
 }
 
 
