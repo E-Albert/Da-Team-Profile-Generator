@@ -14,4 +14,5 @@ Here is a link that will show you how the team profile generator functions.
 
 Below is a screenshot of a page that was able to be generated 
 
+
 ![Screenshot of Generated Page](/dist/TeamProfileSS.png)
